@@ -1,10 +1,9 @@
-Article Cache — Backend Design Problem (Publicis Sapient R2)
-Context
-You are building an in-memory Article Cache for a news feed service. The service fetches article metadata from a slow content database. To reduce latency, you need a fixed-size cache split into two segments that rewards repeated access — articles seen once sit in a probationary zone, while articles accessed again earn protected status and are harder to evict.
-This is the same strategy used by MySQL InnoDB's buffer pool.
+Article Cache — Backend Design Problem (Publicis Sapient R2)\
+\
+Context:\
+You are building an in-memory Article Cache for a news feed service. The service fetches article metadata from a slow content database. To reduce latency, you need a fixed-size cache split into two segments that rewards repeated access — articles seen once sit in a probationary zone, while articles accessed again earn protected status and are harder to evict. This is the same strategy used by MySQL InnoDB's buffer pool.\
 
-The Article Model
-
+The Article Model\
 public class Article {
 	private String articleId;
 	private String headline;
@@ -13,13 +12,11 @@ public class Article {
 	private boolean isBreaking; // whether it's a breaking news article
 }
 
-Cache Structure
-The cache has a total fixed capacity set at conystruction time, split into two segments:
-
-Probationary segment — holds 2/3 of total capacity (rounded down)
-Protected segment — holds 1/3 of total capacity (rounded up)
-
-Both segments behave as LRU lists internally.
+Cache Structure\
+The cache has a total fixed capacity set at conystruction time, split into two segments:\
+Probationary segment — holds 2/3 of total capacity (rounded down)\
+Protected segment — holds 1/3 of total capacity (rounded up)\
+Both segments behave as LRU lists internally.\
 
 Eviction Policy
 New articles always enter the probationary segment
