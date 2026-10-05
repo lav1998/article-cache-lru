@@ -1,3 +1,4 @@
+import constants.Category;
 import model.Article;
 import service.ArticleCache;
 
@@ -5,16 +6,16 @@ public class Main {
     public static void main(String[] args) {
         ArticleCache cache = new ArticleCache(3); // probationary=2, protected=1
 
-        cache.put("a1", new Article("a1", "Headline A1", "TECH", false));
-        cache.put("a2", new Article("a2", "Headline A2", "SPORTS",  false));
+        cache.put("a1", new Article("a1", "Headline A1", Category.TECH.name(), false));
+        cache.put("a2", new Article("a2", "Headline A2", Category.SPORTS.name(),  false));
 
         System.out.println(cache.get("a1")); // hit -> a1 graduates to protected
         System.out.println(cache.get("a1").getArticleId()); // "a1"
 
-        cache.put("a3", new Article("a3", "Headline A3", "FINANCE", true));
+        cache.put("a3", new Article("a3", "Headline A3", Category.FINANCE.name(), true));
         // probationary now: [a2, a3], protected: [a1]
 
-        cache.put("a4", new Article("a4", "Headline A4", "TECH", false));
+        cache.put("a4", new Article("a4", "Headline A4", Category.TECH.name(), false));
         // capacity breach -> evicts a2 (probationary LRU)
 
         System.out.println(cache.get("a2")); // expect null (evicted)
